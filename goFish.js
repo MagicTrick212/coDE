@@ -1,88 +1,94 @@
 //console.log(Math.floor(Math.random() * 1000));
 console.clear();
 let suits = ["of Hearts", "of Clubs", "of Spades", "of Diamonds"];
-
 let faces = [
-  "Ace",
-  "Two",
-  "Three",
-  "Four",
-  "Five",
-  "Six",
-  "Seven",
-  "Eight",
-  "Nine",
-  "Ten",
-  "Jack",
-  "Queen",
-  "King",
+	"Ace",
+	"Two",
+	"Three",
+	"Four",
+	"Five",
+	"Six",
+	"Seven",
+	"Eight",
+	"Nine",
+	"Ten",
+	"Jack",
+	"Queen",
+	"King",
 ];
 
 let obj = {
-  key: "value",
-  another_key: 88,
+	key: "value",
+	another_key: 88,
 };
 
 let card = {
-  suit: "Hearts",
-  face: "Nine",
+	suit: "Hearts",
+	face: "Nine",
 };
 
 let deck = [];
 
 for (let j = 0; j < suits.length; j++) {
-  for (let i = 0; i < faces.length; i++) {
-    deck.push(`${faces[i]} ${suits[j]}`);
-  }
+	for (let i = 0; i < faces.length; i++) {
+		deck.push(`${faces[i]} ${suits[j]}`);
+	}
 }
 
 function shuffle(deck) {
-  for (let i = deck.length - 1; i > 0; i--) {
-    let rand = Math.floor(Math.random() * (i + 1));
-    oldElement = deck[i];
-    deck[i] = deck[rand];
-    deck[rand] = oldElement;
-  }
-  return deck;
+	for (let i = deck.length - 1; i > 0; i--) {
+		let rand = Math.floor(Math.random() * (i + 1));
+		let oldElement = deck[i];
+		deck[i] = deck[rand];
+		deck[rand] = oldElement;
+	}
+	return deck;
 }
 
 shuffle(deck);
-
 let computerHand = deck.splice(0, 5);
 
 let playerHand = deck.splice(0, 5);
 
-function checkCard(face, hand) {
-  for (let card of hand) {
-    if (card.startsWith(face)) {
-      return true;
-    }
-  }
-}
-checkCard(faces[1], playerHand);
-
-function askForCard(face, askersHand, askeesHand) {
-  let handLengthAtStart = askersHand.length;
-  // check hand for any cards with "face"
-  for (let i = askeesHand.length - 1; i >= 0; i--) {
-    console.log(askeesHand[i], i);
-    if (askeesHand[i].startsWith(face)) {
-      // if a card is that "face" then we give it to the other hand
-      let splicedCard = askeesHand.splice(i, 1)[0];
-      console.log("Moving card:", splicedCard);
-    } else {
-      // else we'll do nothing with that card
-    }
-  }
-  if (handLengthAtStart == askersHand.length)
-    // if no cards were given (has the askerHand length changed?), then tell them to go fish
-    askersHand.push(deck.pop());
+console.log(playerHand)
+console.log(computerHand)
+function hasCard(face, hand) {
+	for (let card of hand) {
+		if (card.startsWith(face)) {
+			return true;
+		}
+	}
 }
 
-askForCard(faces[0], playerHand, computerHand);
-askForCard(faces[9], playerHand, computerHand);
-askForCard(faces[6], playerHand, computerHand);
-askForCard(faces[4], playerHand, computerHand);
+function askForCard() {
+	let face = prompt("What card are you asking for?")
+	if (hasCard(face, playerHand)) {
+		transferCards(face, playerHand, computerHand)
+	}
+		
+}
+askForCard()
+
+console.log(playerHand)
+console.log(computerHand)
+function transferCards(face, askersHand, askeesHand) {
+	let handLengthAtStart = askersHand.length;
+	// check hand for any cards with "face"
+	for (let i = askeesHand.length - 1; i >= 0; i--) {
+		console.log(askeesHand[i], i);
+		if (askeesHand[i].startsWith(face)) {
+			// if a card is that "face" then we give it to the other hand
+			let splicedCard = askeesHand.splice(i, 1)[0];
+			console.log("Moving card:", splicedCard);
+		} else {
+			// else we'll do nothing with that card
+		}
+	}
+	if (handLengthAtStart == askersHand.length)
+		// if no cards were given (has the askerHand length changed?), then tell them to go fish
+		askersHand.push(deck.pop());
+}
+
 // console.log(computerHand)
 // console.log(playerHand)
 // console.log(deck);
